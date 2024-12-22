@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
     <uses-permission android:name="android.permission.READ_MEDIA_STORAGE"/>
     <application
-        android:label="panjatan_app"
+        android:label="Panjatan(پنجتن)"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
