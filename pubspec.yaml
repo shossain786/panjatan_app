@@ -15,6 +15,7 @@ dependencies:
   path: ^1.9.0
   flutter_bloc: ^8.1.6
   flutter_launcher_icons: ^0.14.2
+  introduction_screen: ^3.1.14
 
 dev_dependencies:
   flutter_test:
@@ -24,7 +25,9 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - asset/
+    - asset/welcome/welcome1.png
+    - asset/welcome/welcome2.png
+    - asset/welcome/welcome3.png
     - asset/icon.png
 
 flutter_icons:

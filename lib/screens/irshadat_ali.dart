@@ -5,14 +5,14 @@ import 'package:panjatan_app/bloc/bloc/sawal_event.dart';
 import 'package:panjatan_app/bloc/bloc/sawal_state.dart';
 import '../widgets/animated_card.dart';
 
-class SawalScreen extends StatelessWidget {
-  const SawalScreen({super.key});
+class IrshadatAliScreen extends StatelessWidget {
+  const IrshadatAliScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sawal o Jawab'),
+        title: Text('Irshadat E ALI'),
         actions: [
           IconButton(
             icon: Icon(Icons.sync),

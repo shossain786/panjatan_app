@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:panjatan_app/bloc/bloc/sawal_bloc.dart';
 import 'package:panjatan_app/repositories/sawal_repository.dart';
+import 'package:panjatan_app/screens/irshadat_ali.dart';
+import 'package:panjatan_app/screens/welcome_screen.dart';
 import 'db/local_db.dart';
 import 'services/api_service.dart';
-import 'screens/sawal_screen.dart';
 
 void main() {
   final apiService = ApiService();
   final localDB = LocalDB.instance;
-  final sawalRepository = SawalRepository(apiService: apiService, localDB: localDB);
+  final sawalRepository =
+      SawalRepository(apiService: apiService, localDB: localDB);
 
   runApp(MyApp(sawalRepository: sawalRepository));
 }
@@ -30,7 +32,15 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
-        home: SawalScreen(),
+        home: WelcomeScreen(),
+        routes: {
+          '/irshadat': (context) => const IrshadatAliScreen(),
+          // '/settings': (context) => const SettingsScreen(),
+          // '/profile': (context) => const ProfileScreen(),
+          // '/notifications': (context) => const NotificationsScreen(),
+          // '/help': (context) => const HelpScreen(),
+          // '/about': (context) => const AboutScreen(),
+        },
       ),
     );
   }
