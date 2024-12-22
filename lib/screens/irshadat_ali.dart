@@ -32,6 +32,7 @@ class IrshadatAliScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final sawal = state.sawals[index];
                 return AnimatedCard(
+                  cardNumber: (index+1),
                   content: sawal.content,
                   category: sawal.category,
                   date: sawal.date,

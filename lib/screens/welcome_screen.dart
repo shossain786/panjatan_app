@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:video_player/video_player.dart';
 import 'package:panjatan_app/screens/home_screen.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  late VideoPlayerController _videoController;
+
+  @override
+  void initState() {
+    super.initState();
+    _videoController = VideoPlayerController.asset('asset/welcome/welcome1v.mp4')
+      ..initialize().then((_) {
+        setState(() {}); // Update the UI when the video is ready.
+      });
+  }
+
+  @override
+  void dispose() {
+    _videoController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +36,12 @@ class WelcomeScreen extends StatelessWidget {
           title: "Welcome to Panjatan",
           body: "Explore the app to discover amazing features.",
           image: Center(
-              child: Image.asset(
-            'asset/welcome/welcome1.png',
-            height: 175,
-            color: const Color.fromARGB(212, 0, 72, 12),
-          )),
+            child: Image.asset(
+              'asset/welcome/welcome1.png',
+              height: 175,
+              color: const Color.fromARGB(212, 0, 72, 12),
+            ),
+          ),
           decoration: const PageDecoration(
             titleTextStyle:
                 TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -28,7 +52,8 @@ class WelcomeScreen extends StatelessWidget {
           title: "Stay Organized",
           body: "Manage your tasks and schedule efficiently.",
           image: Center(
-              child: Image.asset('asset/welcome/welcome2.jpeg', height: 175)),
+            child: Image.asset('asset/welcome/welcome2.png', height: 175),
+          ),
           decoration: const PageDecoration(
             titleTextStyle:
                 TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -39,10 +64,15 @@ class WelcomeScreen extends StatelessWidget {
           title: "Get Started",
           body: "Let’s begin your journey with Panjatan.",
           image: Center(
-              child: Image.asset('asset/welcome/welcome3.png', height: 175)),
+            child: _videoController.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _videoController.value.aspectRatio,
+                    child: VideoPlayer(_videoController),
+                  )
+                : const CircularProgressIndicator(),
+          ),
           footer: ElevatedButton(
             onPressed: () {
-              // Navigate to the next page
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -58,14 +88,12 @@ class WelcomeScreen extends StatelessWidget {
         ),
       ],
       onDone: () {
-        // Navigate to home when done button is pressed
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
         );
       },
       onSkip: () {
-        // Navigate to home when skip button is pressed
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
