@@ -13,7 +13,8 @@ dependencies:
   bloc: ^8.1.4
   sqflite: ^2.4.1
   path: ^1.9.0
-  flutter_bloc: ^8.1.6  
+  flutter_bloc: ^8.1.6
+  flutter_launcher_icons: ^0.14.2
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +23,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - asset/
+    - asset/icon.png
+
+flutter_icons:
+  android: true
+  image_path: "asset/icon.png"
+  adaptive_icon_foreground: "asset/icon.png"
+  # ios: true
+  adaptive_icon_background: "#eeff1b"
+#flutter pub run flutter_launcher_icons:main
