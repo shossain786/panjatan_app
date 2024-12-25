@@ -13,14 +13,32 @@ class SawalRepository {
 
   /// Fetch data from the local database
   Future<List<SawalModel>> fetchFromLocalDB() async {
-    return await localDB.fetchAllSawals();
+    try {
+      final sawals = await localDB.fetchAllSawals();
+      return sawals;
+    } catch (e) {
+      throw Exception("Failed to fetch data from the local database: $e");
+    }
   }
 
   /// Fetch data from the API and store it in the local database
   Future<void> syncData() async {
-    final sawals = await apiService.fetchSawals();
-    for (var sawal in sawals) {
-      await localDB.insertSawal(sawal);
+    try {
+      final apiSawals = await apiService.fetchSawals();
+
+      // Fetch existing data from the local database
+      final localSawals = await localDB.fetchAllSawals();
+      final localSawalIds = localSawals.map((s) => s.id).toSet();
+
+      // Filter new data to avoid duplicates
+      final newSawals = apiSawals.where((s) => !localSawalIds.contains(s.id)).toList();
+
+      // Insert only new data
+      for (var sawal in newSawals) {
+        await localDB.insertSawal(sawal);
+      }
+    } catch (e) {
+      throw Exception("Failed to sync data from the API: $e");
     }
   }
 }

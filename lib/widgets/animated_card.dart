@@ -20,7 +20,7 @@ class AnimatedCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(8),
       elevation: 5,
-      shadowColor: const Color.fromARGB(255, 149, 242, 247),
+      shadowColor: const Color.fromARGB(255, 167, 245, 21),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -45,7 +45,8 @@ class AnimatedCard extends StatelessWidget {
                 children: [
                   Text(
                     content,
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
                   Text('Category: $category'),

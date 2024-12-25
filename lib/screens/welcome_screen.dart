@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:video_player/video_player.dart';
 import 'package:panjatan_app/screens/home_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -11,20 +10,13 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
-  late VideoPlayerController _videoController;
-
   @override
   void initState() {
     super.initState();
-    _videoController = VideoPlayerController.asset('asset/welcome/welcome1v.mp4')
-      ..initialize().then((_) {
-        setState(() {}); // Update the UI when the video is ready.
-      });
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
     super.dispose();
   }
 
@@ -63,22 +55,53 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         PageViewModel(
           title: "Get Started",
           body: "Let’s begin your journey with Panjatan.",
-          image: Center(
-            child: _videoController.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _videoController.value.aspectRatio,
-                    child: VideoPlayer(_videoController),
-                  )
-                : const CircularProgressIndicator(),
+          image: Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Container(
+              margin: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.green.shade400,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: Center(
+                child: Image.asset(
+                  'asset/welcome/welcome3.jpg',
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
-          footer: ElevatedButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              );
-            },
-            child: const Text("Start Now"),
+          footer: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              },
+              style: ButtonStyle(
+                  backgroundColor: WidgetStatePropertyAll(
+                    Colors.blue,
+                  ),
+                  shadowColor: WidgetStatePropertyAll(
+                    Colors.yellow,
+                  ),
+                  elevation: WidgetStatePropertyAll(5)),
+              child: const Text(
+                "Start Now",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ),
           decoration: const PageDecoration(
             titleTextStyle:

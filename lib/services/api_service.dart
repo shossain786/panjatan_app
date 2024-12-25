@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:panjatan_app/constants.dart';
 import '../models/sawal_model.dart';
 
 class ApiService {
-  static const String apiUrl =
-      'https://dev.itinstruct.com/irshadat/fetch_irshadate.php';
+  static const String apiUrl = IRSHADAT_API;
 
   Future<List<SawalModel>> fetchSawals() async {
     final response = await http.get(Uri.parse(apiUrl));

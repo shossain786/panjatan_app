@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:panjatan_app/widgets/app_background.dart';
+import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -6,15 +8,26 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final gridItems = [
-      GridItem(icon: Icons.star, label: 'Irshadat', route: '/irshadat'),
-      GridItem(icon: Icons.settings, label: 'Settings', route: '/settings'),
-      GridItem(icon: Icons.person, label: 'Profile', route: '/profile'),
       GridItem(
-          icon: Icons.notifications,
-          label: 'Notifications',
-          route: '/notifications'),
-      GridItem(icon: Icons.help, label: 'Help', route: '/help'),
-      GridItem(icon: Icons.info, label: 'About', route: '/about'),
+          icon: Icons.star, label: 'Irshadat(ارشادات)', route: '/irshadat'),
+      GridItem(
+          icon: FlutterIslamicIcons.quran,
+          label: 'Sawal O Jawab(سوالات اور جوابات)',
+          route: '/sawal'),
+      GridItem(
+          icon: FlutterIslamicIcons.islam,
+          label: 'Masails(مسایل)',
+          route: '/masail'),
+      GridItem(
+          icon: Icons.notifications, label: 'Namaaz(نماز)', route: '/namaaz'),
+      GridItem(
+          icon: FlutterIslamicIcons.solidPrayer,
+          label: 'Dua(دعا)',
+          route: '/help'),
+      GridItem(
+          icon: FlutterIslamicIcons.solidTasbih3,
+          label: 'Tasbih(تسبیح)',
+          route: '/tasbih'),
     ];
 
     return Scaffold(
@@ -23,13 +36,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.lightBlueAccent, Colors.white],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+        decoration: myScreenBG(),
         child: GridView.builder(
           padding: const EdgeInsets.all(16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
