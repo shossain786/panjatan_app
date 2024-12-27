@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:panjatan_app/screens/add_sawal_screen.dart';
 import 'package:panjatan_app/widgets/app_background.dart';
 import 'package:flutter_islamic_icons/flutter_islamic_icons.dart';
 
@@ -34,6 +35,19 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("PANJATAN"),
         backgroundColor: Colors.lightBlueAccent,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddSawalScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add),
+          )
+        ],
       ),
       body: Container(
         decoration: myScreenBG(),

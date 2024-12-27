@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:panjatan_app/bloc/bloc/sawal_bloc.dart';
 import 'package:panjatan_app/repositories/sawal_repository.dart';
 import 'package:panjatan_app/screens/irshadat_ali.dart';
+import 'package:panjatan_app/screens/view_sawal_screen.dart';
 import 'package:panjatan_app/screens/welcome_screen.dart';
 import 'db/local_db.dart';
 import 'services/api_service.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         home: WelcomeScreen(),
         routes: {
           '/irshadat': (context) => const IrshadatAliScreen(),
-          // '/settings': (context) => const SettingsScreen(),
+          '/sawal': (context) => ViewSawalScreen(),
           // '/profile': (context) => const ProfileScreen(),
           // '/notifications': (context) => const NotificationsScreen(),
           // '/help': (context) => const HelpScreen(),
