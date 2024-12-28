@@ -1,10 +1,10 @@
 // ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:panjatan_app/constants.dart';
+import 'package:panjatan_app/widgets/app_background.dart';
 
 class ViewSawalScreen extends StatefulWidget {
   const ViewSawalScreen({super.key});
@@ -13,7 +13,8 @@ class ViewSawalScreen extends StatefulWidget {
   _ViewSawalScreenState createState() => _ViewSawalScreenState();
 }
 
-class _ViewSawalScreenState extends State<ViewSawalScreen> {
+class _ViewSawalScreenState extends State<ViewSawalScreen>
+    with SingleTickerProviderStateMixin {
   List<dynamic> sawalList = [];
   bool isLoading = true;
 
@@ -53,47 +54,39 @@ class _ViewSawalScreenState extends State<ViewSawalScreen> {
   }
 
   // Delete a sawal
-Future<void> deleteSawal(int id) async {
-  final url = SAWAL_JAWAB_API; // Your API endpoint
-  try {
-    print('Deleting Sawal with ID: $id'); // Debugging
+  Future<void> deleteSawal(int id) async {
+    final url = SAWAL_JAWAB_API; // Your API endpoint
+    try {
+      final request = http.Request('DELETE', Uri.parse(url))
+        ..headers.addAll({'Content-Type': 'application/json'})
+        ..body = json.encode({"id": id});
 
-    // Create a DELETE request manually
-    final request = http.Request('DELETE', Uri.parse(url))
-      ..headers.addAll({'Content-Type': 'application/json'})
-      ..body = json.encode({"id": id});
+      final response = await http.Client().send(request);
+      final responseData = await http.Response.fromStream(response);
 
-    // Send the request
-    final response = await http.Client().send(request);
-    final responseData = await http.Response.fromStream(response);
-
-    print('Response Code: ${responseData.statusCode}');
-    print('Response Body: ${responseData.body}');
-
-    if (responseData.statusCode == 200) {
-      final decodedResponse = json.decode(responseData.body);
-      if (decodedResponse['status'] == 'success') {
-        await fetchSawalData(); // Refresh the list
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Sawal deleted successfully')),
-        );
+      if (responseData.statusCode == 200) {
+        final decodedResponse = json.decode(responseData.body);
+        if (decodedResponse['status'] == 'success') {
+          await fetchSawalData(); // Refresh the list
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Sawal deleted successfully')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to delete sawal')),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to delete sawal')),
         );
       }
-    } else {
+    } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to delete sawal')),
+        SnackBar(content: Text('Error: $error')),
       );
     }
-  } catch (error) {
-    print('Error: $error'); // Debugging
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Error: $error')),
-    );
   }
-}
 
   @override
   void initState() {
@@ -108,35 +101,52 @@ Future<void> deleteSawal(int id) async {
         title: Text('View Sawal'),
         centerTitle: true,
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : sawalList.isEmpty
-              ? Center(child: Text('No data found'))
-              : ListView.builder(
-                  itemCount: sawalList.length,
-                  itemBuilder: (ctx, index) {
-                    final sawalItem = sawalList[index];
-                    return ListTile(
-                      title: Text(sawalItem['sawal']),
-                      subtitle: Text('Category: ${sawalItem['category']}'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // IconButton(
-                          //   icon: Icon(Icons.edit),
-                          //   onPressed: () {},
-                          // ),
-                          IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              deleteSawal(sawalItem['id']);
-                            },
+      body: Container(
+        decoration: myScreenBG(),
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : sawalList.isEmpty
+                ? Center(child: Text('No data found'))
+                : ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: sawalList.length,
+                    itemBuilder: (ctx, index) {
+                      final sawalItem = sawalList[index];
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                        margin: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
+                        child: Card(
+                          elevation: 5,
+                          shadowColor: Colors.blueAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                          child: ListTile(
+                            title: Text(
+                              sawalItem['sawal'],
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            subtitle: Text(
+                              'Category: ${sawalItem['category']}',
+                              style: TextStyle(color: Colors.black54),
+                            ),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                deleteSawal(sawalItem['id']);
+                              },
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+      ),
     );
   }
 }
