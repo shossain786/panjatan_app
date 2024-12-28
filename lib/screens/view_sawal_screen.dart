@@ -132,7 +132,7 @@ class _ViewSawalScreenState extends State<ViewSawalScreen>
                               ),
                             ),
                             subtitle: Text(
-                              'Category: ${sawalItem['category']}',
+                              'Category: ${sawalItem['jawab']}',
                               style: TextStyle(color: Colors.black54),
                             ),
                             trailing: IconButton(
