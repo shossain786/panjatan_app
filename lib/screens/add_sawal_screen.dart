@@ -106,10 +106,11 @@ class _AddSawalScreenState extends State<AddSawalScreen> {
                         labelText: 'Sawal',
                         border: OutlineInputBorder(),
                         hintText: 'Enter your sawal',
-                        hintMaxLines: 3,
                       ),
+                      minLines: 3,
+                      maxLines: 6,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return 'Please enter sawal';
                         }
                         return null;
@@ -126,8 +127,10 @@ class _AddSawalScreenState extends State<AddSawalScreen> {
                         hintText: 'Enter the jawab',
                         hintMaxLines: 5,
                       ),
+                      minLines: 3,
+                      maxLines: 6,
                       validator: (value) {
-                        if (value == null || value.isEmpty) {
+                        if (value == null || value.trim().isEmpty) {
                           return 'Please enter jawab';
                         }
                         return null;
