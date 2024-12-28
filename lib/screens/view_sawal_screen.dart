@@ -53,24 +53,47 @@ class _ViewSawalScreenState extends State<ViewSawalScreen> {
   }
 
   // Delete a sawal
-  Future<void> deleteSawal(String id) async {
-    final url = SAWAL_JAWAB_API;
-    try {
-      final response = await http.post(Uri.parse(url), body: {'id': id});
-      final responseData = json.decode(response.body);
-      if (responseData['status'] == 'success') {
-        fetchSawalData(); // Refresh the list after deletion
+Future<void> deleteSawal(int id) async {
+  final url = SAWAL_JAWAB_API; // Your API endpoint
+  try {
+    print('Deleting Sawal with ID: $id'); // Debugging
+
+    // Create a DELETE request manually
+    final request = http.Request('DELETE', Uri.parse(url))
+      ..headers.addAll({'Content-Type': 'application/json'})
+      ..body = json.encode({"id": id});
+
+    // Send the request
+    final response = await http.Client().send(request);
+    final responseData = await http.Response.fromStream(response);
+
+    print('Response Code: ${responseData.statusCode}');
+    print('Response Body: ${responseData.body}');
+
+    if (responseData.statusCode == 200) {
+      final decodedResponse = json.decode(responseData.body);
+      if (decodedResponse['status'] == 'success') {
+        await fetchSawalData(); // Refresh the list
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Sawal deleted successfully')));
+          SnackBar(content: Text('Sawal deleted successfully')),
+        );
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Failed to delete sawal')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to delete sawal')),
+        );
       }
-    } catch (error) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error: $error')));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to delete sawal')),
+      );
     }
+  } catch (error) {
+    print('Error: $error'); // Debugging
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $error')),
+    );
   }
+}
 
   @override
   void initState() {
@@ -86,13 +109,9 @@ class _ViewSawalScreenState extends State<ViewSawalScreen> {
         centerTitle: true,
       ),
       body: isLoading
-          ? Center(
-              child:
-                  CircularProgressIndicator()) // Show a loading spinner while fetching data
+          ? Center(child: CircularProgressIndicator())
           : sawalList.isEmpty
-              ? Center(
-                  child: Text(
-                      'No data found')) // Show message if no data is available
+              ? Center(child: Text('No data found'))
               : ListView.builder(
                   itemCount: sawalList.length,
                   itemBuilder: (ctx, index) {
@@ -103,17 +122,14 @@ class _ViewSawalScreenState extends State<ViewSawalScreen> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          IconButton(
-                            icon: Icon(Icons.edit),
-                            onPressed: () {
-                              // Navigate to update screen (optional)
-                            },
-                          ),
+                          // IconButton(
+                          //   icon: Icon(Icons.edit),
+                          //   onPressed: () {},
+                          // ),
                           IconButton(
                             icon: Icon(Icons.delete),
                             onPressed: () {
-                              deleteSawal(
-                                  sawalItem['id'].toString()); // Delete record
+                              deleteSawal(sawalItem['id']);
                             },
                           ),
                         ],
