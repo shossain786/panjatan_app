@@ -133,7 +133,7 @@ class _ViewSawalScreenState extends State<ViewSawalScreen>
                 children: [
                   // Category Dropdown
                   Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: DropdownButton<String>(
                         value:
                             selectedCategory.isEmpty ? null : selectedCategory,
@@ -149,7 +149,9 @@ class _ViewSawalScreenState extends State<ViewSawalScreen>
                       )),
                   Expanded(
                     child: filteredSawalList.isEmpty
-                        ? Center(child: Text('No data found'))
+                        ? Center(
+                            child: Text('No data found'),
+                          )
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
                             itemCount: filteredSawalList.length,
@@ -161,35 +163,63 @@ class _ViewSawalScreenState extends State<ViewSawalScreen>
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOut,
                                 margin: EdgeInsets.symmetric(
-                                    vertical: 8.0, horizontal: 16.0),
+                                    vertical: 2.0, horizontal: 2.0),
                                 child: Card(
-                                  elevation: 5,
-                                  shadowColor: Colors.blueAccent,
+                                  elevation: 1,
+                                  shadowColor: Colors.red,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(12.0),
                                   ),
                                   child: ListTile(
-                                    title: Text(
-                                      sawalItem['sawal'],
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black87,
+                                    title: Container(
+                                      padding: EdgeInsets.all(10),
+                                      margin: EdgeInsets.only(bottom: 2),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            width: 2,
+                                            color: const Color.fromARGB(255, 1,
+                                                38, 68), // Bottom border color
+                                          ),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        sawalItem['sawal'],
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black87,
+                                          fontSize: 20,
+                                        ),
                                       ),
                                     ),
+
                                     subtitle: isExpanded
-                                        ? Text(
-                                            'Answer: ${sawalItem['jawab']}',
-                                            style: TextStyle(
-                                                color: Colors.black54),
+                                        ? Container(
+                                            padding: EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: Colors.blue,
+                                                )),
+                                            child: Text(
+                                              'Answer: ${sawalItem['jawab']}',
+                                              style: TextStyle(
+                                                  fontSize: 24,
+                                                  color: const Color.fromARGB(
+                                                      255, 29, 1, 78)),
+                                            ),
                                           )
                                         : null,
-                                    trailing: IconButton(
-                                      icon:
-                                          Icon(Icons.delete, color: Colors.red),
-                                      onPressed: () {
-                                        deleteSawal(sawalItem['id']);
-                                      },
-                                    ),
+                                    // trailing: IconButton(
+                                    //   icon:
+                                    //       Icon(Icons.delete, color: Colors.red),
+                                    //   onPressed: () {
+                                    //     deleteSawal(sawalItem['id']);
+                                    //   },
+                                    // ),
                                     onTap: () {
                                       setState(() {
                                         // Toggle expanded state for the tapped tile
